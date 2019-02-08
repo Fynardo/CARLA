@@ -52,8 +52,9 @@ class Presenter:
         step = float(self.view.left_side_panel.step_entry.get())
         intercept = float(self.view.left_side_panel.intercept_entry.get())
 
-        kwargs = {k: v.get() for k,v in self.dynamic_fields.items()}
+        #kwargs = {k: v.get() for k,v in self.dynamic_fields.items()}
+        args = [v.get() for v in self.dynamic_fields.values()]
 
-        x, y = self.model.calculate(f_name, x_inf, x_sup, step, intercept, **kwargs)
+        x, y = self.model.calculate(f_name, x_inf, x_sup, step, intercept, *args)
 
         self.view.replot(x, y, grid=self.view.left_side_panel.grid_chk_var.get())

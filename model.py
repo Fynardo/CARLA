@@ -12,9 +12,9 @@ class Model:
         f = definitions.get_function(f_name)
         return f.fields
 
-    def calculate(self, f_name, x_inf, x_sup, step, intercept, **kwargs):
-        f = definitions.get_function(f_name)
-        return f.calculate(x_inf, x_sup, step, intercept, **kwargs)
+    def calculate(self, f_name, x_inf, x_sup, step, intercept, *args):
+        f = definitions.create_function(f_name, *args)
+        return f.calculate(x_inf, x_sup, step, intercept)
 
 
 

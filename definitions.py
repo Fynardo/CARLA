@@ -9,65 +9,85 @@ class Field:
         self.tk_type = tk_type
 
 
-class Linear:
-    def __init__(self):
-        self.name = 'linear'
-        self.fields = [Field('slope', 1, tk.Entry)]
+class BaseFunction:
+    fields = []
 
-    def calculate(self, x_inf, x_sup, step, intercept, slope):
+    def __init__(self, name):
+        self.name = name
+
+    def calculate(self, x_inf, x_sup, step, intercept):
+        pass
+
+
+class Linear(BaseFunction):
+    fields = [Field('slope', 1, tk.Entry)]
+
+    def __init__(self, slope=None):
+        super().__init__('linear')
+        self.slope = slope
+
+    def calculate(self, x_inf, x_sup, step, intercept):
         x = np.arange(x_inf, x_sup, step)
-        return x, float(intercept) + float(slope) * x
+        return x, intercept + float(self.slope) * x
 
 
-class Exponential:
+class Exponential(BaseFunction):
     def __init__(self):
-        self.name = 'exp'
-        self.fields = []
+        super().__init__('exp')
 
     def calculate(self, x_inf, x_sup, step, intercept):
         x = np.arange(x_inf, x_sup, step)
         return x, intercept + np.exp(x)
 
 
-class Logarithm:
-    def __init__(self):
-        self.name = 'log'
-        self.fields = [Field('base', np.e, tk.Entry)]
+class Logarithm(BaseFunction):
+    fields = [Field('base', np.e, tk.Entry)]
 
-    def calculate(self, x_inf, x_sup, step, intercept, base):
-        x = np.arange(x_inf, x_sup, step)
-        return x, intercept + np.log(x) / np.log(float(base))
-
-
-class NewtonLawCooling:
-    def __init__(self):
-        self.name = 'newton'
-        self.fields = [Field('T', 90, tk.Entry), Field('T0', 10, tk.Entry), Field('theta', 0.027, tk.Entry)]
-
-    def calculate(self, x_inf, x_sup, step, intercept, T, T0, theta):
-        x = np.arange(x_inf, x_sup, step)
-
-        return x, intercept + int(T0) + (int(T) - int(T0)) * np.exp(-float(theta) * x)
-
-
-class Logistic:
-    def __init__(self):
-        self.name = 'logistic'
-        self.fields = []
+    def __init__(self, base=None):
+        super().__init__('log')
+        self.base = base
 
     def calculate(self, x_inf, x_sup, step, intercept):
         x = np.arange(x_inf, x_sup, step)
+        return x, intercept + np.log(x) / np.log(float(self.base))
 
+
+class NewtonLawCooling(BaseFunction):
+    fields = [Field('T', 90, tk.Entry), Field('T0', 10, tk.Entry), Field('theta', 0.027, tk.Entry)]
+
+    def __init__(self, t=None, t0=None, theta=None):
+        super().__init__('newton')
+        self.t = t
+        self.t0 = t0
+        self.theta = theta
+
+    def calculate(self, x_inf, x_sup, step, intercept):
+        x = np.arange(x_inf, x_sup, step)
+        return x, intercept + float(self.t0) + (float(self.t) - float(self.t0)) * np.exp(-float(self.theta) * x)
+
+
+class Logistic(BaseFunction):
+    def __init__(self):
+        super().__init__('logistic')
+
+    def calculate(self, x_inf, x_sup, step, intercept):
+        x = np.arange(x_inf, x_sup, step)
         return x, intercept + np.exp(x) / (1 + np.exp(x))
 
 
 functions = {'exp': Exponential, 'linear': Linear, 'log': Logarithm, 'logistic': Logistic, 'newton': NewtonLawCooling}
 
 
-def get_function(f_name, *kwargs):
+def get_function(f_name):
     for k, v in functions.items():
         if k == f_name:
-            return v(*kwargs)
+            return v
+
+
+def create_function(f_name, *args):
+    for k, v in functions.items():
+        if k == f_name:
+            return v(*args)
 
 
 def get_function_names():
