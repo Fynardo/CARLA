@@ -65,7 +65,7 @@ class LeftSidePanel:
         self.intercept_label = tk.Label(self.frame, text="Intercept: ")
         self.intercept_label.pack(side="top")
         self.intercept_entry = tk.Entry(self.frame)
-        self.intercept_entry.insert(tk.END, 1)
+        self.intercept_entry.insert(tk.END, 0)
         self.intercept_entry.pack(side="top")
 
         self.grid_chk_var = tk.IntVar(value=1)
