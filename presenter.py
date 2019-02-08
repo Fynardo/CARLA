@@ -23,7 +23,6 @@ class Presenter:
 
     def selection_changed(self, event):
         f_name = self.view.top_panel.function_combo.get()
-        print(f_name)
 
         for field in self.dynamic_fields.values():
             field.destroy()
@@ -33,7 +32,6 @@ class Presenter:
         for label in self.dynamic_labels:
             label.destroy()
 
-        print(self.dynamic_fields)
         fields = self.model.get_function_fields(f_name)
         for field in fields:
             item_label = tk.Label(self.view.top_panel.frame, text=field.name+' :')
@@ -52,11 +50,10 @@ class Presenter:
         x_inf = float(self.view.left_side_panel.x_inf_entry.get())
         x_sup = float(self.view.left_side_panel.x_sup_entry.get())
         step = float(self.view.left_side_panel.step_entry.get())
-        print("{}: ({},{},{}). {}".format(f_name, x_inf, x_sup, step, self.view.left_side_panel.grid_chk_var.get()))
+        intercept = float(self.view.left_side_panel.intercept_entry.get())
 
         kwargs = {k: v.get() for k,v in self.dynamic_fields.items()}
-        print(kwargs)
 
-        x, y = self.model.calculate(f_name, x_inf, x_sup, step, **kwargs)
+        x, y = self.model.calculate(f_name, x_inf, x_sup, step, intercept, **kwargs)
 
         self.view.replot(x, y, grid=self.view.left_side_panel.grid_chk_var.get())

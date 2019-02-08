@@ -62,6 +62,12 @@ class LeftSidePanel:
         self.step_entry.insert(tk.END, 1)
         self.step_entry.pack(side="top")
 
+        self.intercept_label = tk.Label(self.frame, text="Intercept: ")
+        self.intercept_label.pack(side="top")
+        self.intercept_entry = tk.Entry(self.frame)
+        self.intercept_entry.insert(tk.END, 1)
+        self.intercept_entry.pack(side="top")
+
         self.grid_chk_var = tk.IntVar(value=1)
         self.grid_chk = tk.Checkbutton(self.frame, text="Grid", variable=self.grid_chk_var)
         self.grid_chk.pack(side="top")

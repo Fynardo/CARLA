@@ -12,7 +12,7 @@ class Field:
 class Linear:
     def __init__(self):
         self.name = 'linear'
-        self.fields = [Field('intercept', 0, tk.Entry), Field('slope', 1, tk.Entry)]
+        self.fields = [Field('slope', 1, tk.Entry)]
 
     def calculate(self, x_inf, x_sup, step, intercept, slope):
         x = np.arange(x_inf, x_sup, step)
@@ -24,9 +24,9 @@ class Exponential:
         self.name = 'exp'
         self.fields = []
 
-    def calculate(self, x_inf, x_sup, step):
+    def calculate(self, x_inf, x_sup, step, intercept):
         x = np.arange(x_inf, x_sup, step)
-        return x, np.exp(x)
+        return x, intercept + np.exp(x)
 
 
 class Logarithm:
@@ -34,9 +34,9 @@ class Logarithm:
         self.name = 'log'
         self.fields = [Field('base', np.e, tk.Entry)]
 
-    def calculate(self, x_inf, x_sup, step, base):
+    def calculate(self, x_inf, x_sup, step, intercept, base):
         x = np.arange(x_inf, x_sup, step)
-        return x, np.log(x) / np.log(float(base))
+        return x, intercept + np.log(x) / np.log(float(base))
 
 
 class NewtonLawCooling:
@@ -44,10 +44,10 @@ class NewtonLawCooling:
         self.name = 'newton'
         self.fields = [Field('T', 90, tk.Entry), Field('T0', 10, tk.Entry), Field('theta', 0.027, tk.Entry)]
 
-    def calculate(self, x_inf, x_sup, step, T, T0, theta):
+    def calculate(self, x_inf, x_sup, step, intercept, T, T0, theta):
         x = np.arange(x_inf, x_sup, step)
 
-        return x, int(T0) + (int(T) - int(T0)) * np.exp(-float(theta) * x)
+        return x, intercept + int(T0) + (int(T) - int(T0)) * np.exp(-float(theta) * x)
 
 
 class Logistic:
@@ -55,10 +55,10 @@ class Logistic:
         self.name = 'logistic'
         self.fields = []
 
-    def calculate(self, x_inf, x_sup, step):
+    def calculate(self, x_inf, x_sup, step, intercept):
         x = np.arange(x_inf, x_sup, step)
 
-        return x, np.exp(x) / (1 + np.exp(x))
+        return x, intercept + np.exp(x) / (1 + np.exp(x))
 
 
 functions = {'exp': Exponential, 'linear': Linear, 'log': Logarithm, 'logistic': Logistic, 'newton': NewtonLawCooling}
