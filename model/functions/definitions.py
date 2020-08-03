@@ -75,20 +75,3 @@ class Logistic(BaseFunction):
         return x, intercept + np.exp(x) / (1 + np.exp(x))
 
 
-functions = {'exp': Exponential, 'linear': Linear, 'log': Logarithm, 'logistic': Logistic, 'newton': NewtonLawCooling}
-
-
-def get_function(f_name):
-    for k, v in functions.items():
-        if k == f_name:
-            return v
-
-
-def create_function(f_name, *args):
-    for k, v in functions.items():
-        if k == f_name:
-            return v(*args)
-
-
-def get_function_names():
-    return [k for k in functions.keys()]
