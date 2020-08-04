@@ -89,7 +89,7 @@ class CanvasFrame(tk.Frame):
     def draw(self, x, y, grid):
         self.ax0.plot(x, y)
         if grid:
-            self.ax0.grid()
+            self.ax0.grid(True)
         self.canvas.draw()
 
     def clear(self, event=None):

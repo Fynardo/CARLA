@@ -24,7 +24,7 @@ class SelectionFrame(tk.Frame):
         self.utilities_label = tk.Label(self, text="Select Utility: ")
         self.utilities_label.pack(side=tk.LEFT)
 
-        self.utilities_combo = ttk.Combobox(self, width=10, state='readonly')
-        self.utilities_combo["values"] = ['Gameplay', 'Functions']
+        self.utilities_combo = ttk.Combobox(self, width=15, state='readonly')
+        self.utilities_combo["values"] = ['Gameplay', 'Randomwalk', 'Functions']
         self.utilities_combo.current(0)
         self.utilities_combo.pack(side=tk.LEFT)    
